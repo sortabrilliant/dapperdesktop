@@ -5,10 +5,6 @@
 		width: 100%;
 		max-width: 260px;
 		margin: 4px auto 20px;
-
-		.download__button {
-			text-decoration: none;
-		}
 	}
 
 	.download__button {
@@ -24,11 +20,6 @@
 		line-height: 45px;
 		cursor: pointer;
 		padding: 0;
-
-		&:focus ~ .download__popover {
-				height: 210px;
-				opacity: 1;
-		}
 	}
 
 	.download__popover {
@@ -44,6 +35,11 @@
 		opacity: 0;
 		font-size: 15px;
 		transition: all 0.5s ease-in-out;
+	}
+
+	.download__button:focus ~ .download__popover {
+		height: 210px;
+		opacity: 1;
 	}
 
 	.download__popover-inner {

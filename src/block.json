@@ -7,6 +7,9 @@
 		},
 		"url": {
 			"type": "string"
+		},
+		"isResized": {
+			"type": "boolean"
 		}
 	}
 }

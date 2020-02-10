@@ -6,8 +6,15 @@
 		display: inline;
 	}
 
-	&.is-transient img,
-	&.is-resizing img {
+	&.can-resize {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&.can-resize img,
+	&.in-progress img,
+	&.is-transient img {
 		opacity: 0.3;
 	}
 
@@ -19,7 +26,12 @@
 		margin-left: -9px;
 	}
 
-	.resizing-notice {
+	.components-button {
+		position: absolute;
+		z-index: 1;
+	}
+
+	.progress-notice {
 		position: absolute;
 		z-index: 1;
 		margin-top: 0;

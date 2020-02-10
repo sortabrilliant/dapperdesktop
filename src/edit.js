@@ -15,7 +15,7 @@ import {
 	MediaUploadCheck
 } from '@wordpress/block-editor';
 import { Component } from '@wordpress/element';
-import { IconButton, Spinner, Toolbar, withNotices } from '@wordpress/components';
+import { Button, IconButton, Spinner, Toolbar, withNotices } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 
 /**
@@ -34,24 +34,25 @@ class Edit extends Component {
 
 		this.state = {
 			isEditing: ! attributes.url,
-			isResizing: null,
+			inProgress: null,
 		};
 	}
 
 	resizeImage() {
-		const { attributes, noticeOperations } = this.props;
+		const { attributes, setAttributes, noticeOperations } = this.props;
 		const { id } = attributes;
 
-		this.setState( { isResizing: true } );
+		this.setState( { inProgress: true } );
 		noticeOperations.removeAllNotices();
 
 		resizeImageRequest( id )
 			.then( () => {
-				this.setState( { isResizing: null } );
+				this.setState( { inProgress: null } );
+				setAttributes( { isResized: true } );
 			} )
 			.catch( ( error ) => {
 				noticeOperations.createErrorNotice( error.message );
-				this.setState( { isResizing: null } );
+				this.setState( { inProgress: null } );
 			} );
 	}
 
@@ -67,6 +68,7 @@ class Edit extends Component {
 			this.props.setAttributes( {
 				id: undefined,
 				url: undefined,
+				isResized: false,
 			} );
 			return;
 		}
@@ -79,13 +81,15 @@ class Edit extends Component {
 		this.props.setAttributes( {
 			id: media.id,
 			url: media.url,
+			isResized: false,
 		} );
 	}
 
 	render() {
-		const { isEditing, isResizing } = this.state;
+		const { isEditing, inProgress } = this.state;
 		const { attributes, className, noticeUI } = this.props;
-		const { id, url } = attributes;
+		const { id, url, isResized } = attributes;
+		const hideResizeButton = inProgress || isBlobURL( url );
 
 		if ( isEditing || ! url ) {
 			return (
@@ -125,30 +129,28 @@ class Edit extends Component {
 			</>
 		);
 
-		const resizeButton = (
+		const resizeButton = ! isResized && (
 			<>
-				<Toolbar>
-					<IconButton
-						className="components-toolbar__control"
-						label="Resize image"
-						icon="image-crop"
-						disabled={ isResizing }
-						onClick={ this.resizeImage }
-					/>
-				</Toolbar>
+				<Button
+					isLarge
+					className="editor-media-placeholder__button"
+					onClick={ this.resizeImage }
+				>
+					Create wallpaper files
+				</Button>
 			</>
 		);
 
 		const controls = (
 			<BlockControls>
 				{ editButton }
-				{ resizeButton }
 			</BlockControls>
 		);
 
 		const classes = classnames( className, {
+			'can-resize': ! isResized,
 			'is-transient': isBlobURL( url ),
-			'is-resizing': isResizing,
+			'in-progress': inProgress,
 		} );
 
 		return (
@@ -156,8 +158,9 @@ class Edit extends Component {
 				{ noticeUI }
 				{ controls }
 				<figure className={ classes }>
-					{ isResizing && <div className="resizing-notice">Resizing…</div> }
+					{ inProgress && <div className="progress-notice">Resizing…</div> }
 					{ isBlobURL( url ) && <Spinner /> }
+					{ ! hideResizeButton && resizeButton }
 					<img src={ url } alt="" />
 				</figure>
 			</>
