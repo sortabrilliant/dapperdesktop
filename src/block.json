@@ -1,0 +1,12 @@
+{
+	"name": "sortabrilliant/dapper-desktop",
+	"category": "common",
+	"attributes": {
+		"id": {
+			"type": "number"
+		},
+		"url": {
+			"type": "string"
+		}
+	}
+}
