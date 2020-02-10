@@ -15,7 +15,8 @@ import {
 	MediaUploadCheck
 } from '@wordpress/block-editor';
 import { Component } from '@wordpress/element';
-import { IconButton, Spinner, Toolbar } from '@wordpress/components';
+import { IconButton, Spinner, Toolbar, withNotices } from '@wordpress/components';
+import { compose } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -28,6 +29,7 @@ class Edit extends Component {
 	constructor( { attributes } ) {
 		super( ...arguments );
 		this.resizeImage = this.resizeImage.bind( this );
+		this.onUploadError = this.onUploadError.bind( this );
 		this.onSelectImage = this.onSelectImage.bind( this );
 
 		this.state = {
@@ -37,18 +39,27 @@ class Edit extends Component {
 	}
 
 	resizeImage() {
-		const { attributes } = this.props;
+		const { attributes, noticeOperations } = this.props;
 		const { id } = attributes;
 
 		this.setState( { isResizing: true } );
+		noticeOperations.removeAllNotices();
 
 		resizeImageRequest( id )
 			.then( () => {
 				this.setState( { isResizing: null } );
 			} )
 			.catch( ( error ) => {
-				console.log( error );
+				noticeOperations.createErrorNotice( error.message );
+				this.setState( { isResizing: null } );
 			} );
+	}
+
+	onUploadError( message ) {
+		const { noticeOperations } = this.props;
+
+		noticeOperations.createErrorNotice( message );
+		this.setState( { isEditing: true, } );
 	}
 
 	onSelectImage( media ) {
@@ -73,7 +84,7 @@ class Edit extends Component {
 
 	render() {
 		const { isEditing, isResizing } = this.state;
-		const { attributes, className } = this.props;
+		const { attributes, className, noticeUI } = this.props;
 		const { id, url } = attributes;
 
 		if ( isEditing || ! url ) {
@@ -82,6 +93,8 @@ class Edit extends Component {
 					<MediaPlaceholder
 						icon={ <BlockIcon icon="images-alt2" /> }
 						onSelect={ this.onSelectImage }
+						notices={ noticeUI }
+						onError={ this.onUploadError }
 						accept="image/*"
 						allowedTypes={ ALLOWED_MEDIA_TYPES }
 						value={ { id, src: undefined } }
@@ -140,6 +153,7 @@ class Edit extends Component {
 
 		return (
 			<>
+				{ noticeUI }
 				{ controls }
 				<figure className={ classes }>
 					{ isResizing && <div className="resizing-notice">Resizing…</div> }
@@ -151,4 +165,6 @@ class Edit extends Component {
 	}
 }
 
-export default Edit;
+export default compose( [
+	withNotices,
+] )( Edit );

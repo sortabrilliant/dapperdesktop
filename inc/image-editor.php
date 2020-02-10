@@ -47,13 +47,13 @@ function resize( $image_id ) {
 	$editor = wp_get_image_editor( $original_image );
 
 	if ( ! $editor->load() ) {
-		return new WP_Error( 'fileload', 'Unable to load original media file' );
+		return new WP_Error( 'fileload', 'Unable to load original media file.' );
 	}
 
 	$created_sizes = $editor->multi_resize( DESKTOP_SIZES );
 
 	if ( empty( $created_sizes ) ) {
-		return new WP_Error( 'resize', 'Unable to resize original media file' );
+		return new WP_Error( 'resize', 'Unable to resize original media file.' );
 	}
 
 	$image_meta['sizes'] = array_merge( $image_meta['sizes'], $created_sizes );
