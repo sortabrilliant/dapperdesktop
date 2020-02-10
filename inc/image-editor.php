@@ -2,6 +2,8 @@
 
 namespace SortaBrilliant\DapperDesktop\ImageEditor;
 
+use WP_Error;
+
 const DESKTOP_SIZES = [
 	'5K' => [
 		'width'  => 5120,
@@ -51,7 +53,7 @@ function resize( $image_id ) {
 	$created_sizes = $editor->multi_resize( DESKTOP_SIZES );
 
 	if ( empty( $created_sizes ) ) {
-		return new WP_Error ( 'resize', 'Unable to resize original media file' );
+		return new WP_Error( 'resize', 'Unable to resize original media file' );
 	}
 
 	$image_meta['sizes'] = array_merge( $image_meta['sizes'], $created_sizes );
