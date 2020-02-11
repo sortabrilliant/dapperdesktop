@@ -29,16 +29,16 @@ const DESKTOP_SIZES = [
 
 const MOBILE_SIZES = [
 	'2K' => [
-		'width'  => 2560,
-		'height' => 1440,
+		'width'  => 1440,
+		'height' => 2560,
 	],
 	'FHD' => [
-		'width'  => 1920,
-		'height' => 1080,
+		'width'  => 1080,
+		'height' => 1920,
 	],
 	'HD' => [
-		'width'  => 1280,
-		'height' => 720,
+		'width'  => 720,
+		'height' => 1280,
 	],
 ];
 
