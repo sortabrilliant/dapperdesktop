@@ -10,12 +10,21 @@ import { isBlobURL } from '@wordpress/blob';
 import {
 	BlockControls,
 	BlockIcon,
+	InspectorControls,
 	MediaPlaceholder,
 	MediaUpload,
 	MediaUploadCheck
 } from '@wordpress/block-editor';
+import {
+	Button,
+	IconButton,
+	PanelBody,
+	SelectControl,
+	Spinner,
+	Toolbar,
+	withNotices
+} from '@wordpress/components';
 import { Component } from '@wordpress/element';
-import { Button, IconButton, Spinner, Toolbar, withNotices } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 
 /**
@@ -25,12 +34,18 @@ import resizeImageRequest from './api';
 
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
+const TYPE_OPTIONS = [
+	{ label: 'Desktop', value: 'desktop' },
+	{ label: 'Mobile', value: 'mobile' },
+];
+
 class Edit extends Component {
 	constructor( { attributes } ) {
 		super( ...arguments );
 		this.resizeImage = this.resizeImage.bind( this );
 		this.onUploadError = this.onUploadError.bind( this );
 		this.onSelectImage = this.onSelectImage.bind( this );
+		this.onSelectType = this.onSelectType.bind( this );
 
 		this.state = {
 			isEditing: ! attributes.url,
@@ -40,12 +55,12 @@ class Edit extends Component {
 
 	resizeImage() {
 		const { attributes, setAttributes, noticeOperations } = this.props;
-		const { id } = attributes;
+		const { id, type } = attributes;
 
 		this.setState( { inProgress: true } );
 		noticeOperations.removeAllNotices();
 
-		resizeImageRequest( id )
+		resizeImageRequest( id, { type } )
 			.then( () => {
 				this.setState( { inProgress: null } );
 				setAttributes( { isResized: true } );
@@ -85,11 +100,23 @@ class Edit extends Component {
 		} );
 	}
 
+	onSelectType( type ) {
+		this.props.setAttributes( {
+			type,
+			isResized: false,
+		} );
+	}
+
 	render() {
 		const { isEditing, inProgress } = this.state;
 		const { attributes, className, noticeUI } = this.props;
-		const { id, url, isResized } = attributes;
+		const { id, url, type, isResized } = attributes;
 		const hideResizeButton = inProgress || isBlobURL( url );
+
+		const labels = {
+			title: 'Wallpaper',
+			instructions: 'Upload your image or select one from the media library. For best results please use an image at least "5120x2880".',
+		};
 
 		if ( isEditing || ! url ) {
 			return (
@@ -98,6 +125,7 @@ class Edit extends Component {
 						icon={ <BlockIcon icon="images-alt2" /> }
 						onSelect={ this.onSelectImage }
 						notices={ noticeUI }
+						labels={ labels }
 						onError={ this.onUploadError }
 						accept="image/*"
 						allowedTypes={ ALLOWED_MEDIA_TYPES }
@@ -153,10 +181,24 @@ class Edit extends Component {
 			'in-progress': inProgress,
 		} );
 
+		const inspectorControls = (
+			<InspectorControls>
+				<PanelBody title="Wallpaper Settings">
+					<SelectControl
+						label="Wallpaper Type"
+						value={ type }
+						options={ TYPE_OPTIONS }
+						onChange={ this.onSelectType }
+					/>
+				</PanelBody>
+			</InspectorControls>
+		);
+
 		return (
 			<>
 				{ noticeUI }
 				{ controls }
+				{ inspectorControls }
 				<figure className={ classes }>
 					{ inProgress && <div className="progress-notice">Resizing…</div> }
 					{ isBlobURL( url ) && <Spinner /> }

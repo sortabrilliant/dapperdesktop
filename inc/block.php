@@ -59,7 +59,7 @@ add_action( 'init', __NAMESPACE__ . '\\register_block' );
  * @return void
  */
 function render_block( $attributes ) {
-	$data = ImageEditor\get_image_data( $attributes['id'] );
+	$data = ImageEditor\get_image_data( $attributes['id'], $attributes['type'] );
 	
 	extract( [ 'data' => $data ], EXTR_SKIP );
 

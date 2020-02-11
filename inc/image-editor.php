@@ -27,13 +27,28 @@ const DESKTOP_SIZES = [
 	],
 ];
 
+const MOBILE_SIZES = [
+	'2K' => [
+		'width'  => 2560,
+		'height' => 1440,
+	],
+	'FHD' => [
+		'width'  => 1920,
+		'height' => 1080,
+	],
+	'HD' => [
+		'width'  => 1280,
+		'height' => 720,
+	],
+];
+
 /**
  * Resize the image.
  *
  * @param int $image_id Attachment ID.
  * @return bool|WP_Error
  */
-function resize( $image_id ) {
+function resize( $image_id, $type = 'desktop' ) {
 	$image_meta = wp_get_attachment_metadata( $image_id );
 	$image_file = get_attached_file( $image_id );
 
@@ -50,7 +65,8 @@ function resize( $image_id ) {
 		return new WP_Error( 'fileload', 'Unable to load original media file.' );
 	}
 
-	$created_sizes = $editor->multi_resize( DESKTOP_SIZES );
+	$sizes         = ( $type === 'desktop' ) ? DESKTOP_SIZES : MOBILE_SIZES;
+	$created_sizes = $editor->multi_resize( $sizes );
 
 	if ( empty( $created_sizes ) ) {
 		return new WP_Error( 'resize', 'Unable to resize original media file.' );
@@ -68,7 +84,7 @@ function resize( $image_id ) {
  * @param int $image_id
  * @return array $data
  */
-function get_image_data( $image_id ) {
+function get_image_data( $image_id, $type = 'desktop' ) {
 	$imagedata = wp_get_attachment_metadata( $image_id );
 	$data      = [
 		'sizes' => [],
@@ -80,7 +96,8 @@ function get_image_data( $image_id ) {
 	}
 
 	// Get only sizes we need.
-	$sizes = array_intersect_key( $imagedata['sizes'], DESKTOP_SIZES );
+	$supported = ( $type === 'desktop' ) ? DESKTOP_SIZES : MOBILE_SIZES;
+	$sizes     = array_intersect_key( $imagedata['sizes'], $supported );
 
 	if ( empty( $sizes ) ) {
 		return $data;

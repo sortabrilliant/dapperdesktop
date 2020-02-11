@@ -8,6 +8,10 @@
 		"url": {
 			"type": "string"
 		},
+		"type": {
+			"type": "string",
+			"default": "desktop"
+		},
 		"isResized": {
 			"type": "boolean"
 		}

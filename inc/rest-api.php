@@ -21,6 +21,13 @@ function register_routes() {
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => __NAMESPACE__ . '\\handle_resize',
 				'permission_callback' => __NAMESPACE__ . '\\permissions_check',
+				'args'                => [
+					'type' => [
+						'type'              => 'string',
+						'enum'              => [ 'desktop', 'mobile' ],
+						'required'          => true,
+					],
+				],
 			]
 		]
 	);
@@ -42,5 +49,5 @@ function permissions_check( WP_REST_Request $request ) {
  * @return void
  */
 function handle_resize( WP_REST_Request $request ) {
-	return ImageEditor\resize( $request['id'] );
+	return ImageEditor\resize( $request['id'], $request['type'] );
 }
