@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 A boring desktop is the sign of a boring life.
 
 == Description ==
-Please tell me you aren't still rocking that default desktop wallpaper. You know the ones that came with your computer. That's so sad. 
+Please tell me you aren't still rocking that default desktop wallpaper. You know the ones that came with your computer. That's so sad.
 
 #### I like this, who made it?
 This plugin is brought to you by [sorta brilliant](https://sortabrilliant.com/) and [block garden](https://block.garden).

@@ -13,7 +13,7 @@ const { name, category, attributes } = metadata;
 
 registerBlockType( name, {
 	title: 'Dapper Desktop',
-	description: '',
+	description: 'A boring desktop is the sign of a boring life.',
 	icon: 'images-alt2',
 	keywords: [ 'wallpaper' ],
 	category,

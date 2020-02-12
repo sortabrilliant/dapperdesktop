@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Dapper Desktop
  * Plugin URI:  https://sortabrilliant.com/dapperdesktop/
- * Description:
+ * Description: A boring desktop is the sign of a boring life.
  * Author:      sorta brilliant
  * Author URI:  https://sortabrilliant.com/
  * Version:     1.0.0
