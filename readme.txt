@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
-A boring desktop is the sign of a boring life.
+A boring desktop is the sign of a boring life. Let's fix that.
 
 == Description ==
 Please tell me you aren't still rocking that default desktop wallpaper. You know the ones that came with your computer. That's so sad. Let us help.
