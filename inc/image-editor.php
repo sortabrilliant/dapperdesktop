@@ -81,14 +81,16 @@ function resize( $image_id, $type = 'desktop' ) {
 /**
  * Retrieves the image's various size path, width, and height.
  *
- * @param int $image_id
+ * @param array $attr  The block attributes.
  * @return array $data
  */
-function get_image_data( $image_id, $type = 'desktop' ) {
-	$imagedata = wp_get_attachment_metadata( $image_id );
+function get_image_data( $attr ) {
+	$imagedata = wp_get_attachment_metadata( $attr['id'] );
 	$data      = [
+		'id'    => $attr['id'],
+		'url'   => $attr['url'],
+		'type'  => isset( $attr['type'] ) ? $attr['type'] : 'desktop',
 		'sizes' => [],
-		'url'   => wp_get_attachment_url( $image_id ),
 	];
 
 	if ( ! is_array( $imagedata ) || empty( $imagedata['sizes'] ) ) {
@@ -96,7 +98,7 @@ function get_image_data( $image_id, $type = 'desktop' ) {
 	}
 
 	// Get only sizes we need.
-	$supported = ( $type === 'desktop' ) ? DESKTOP_SIZES : MOBILE_SIZES;
+	$supported = ( $data['type'] === 'desktop' ) ? DESKTOP_SIZES : MOBILE_SIZES;
 	$sizes     = array_intersect_key( $imagedata['sizes'], $supported );
 
 	if ( empty( $sizes ) ) {

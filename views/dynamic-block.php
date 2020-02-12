@@ -1,6 +1,6 @@
 <div class="wp-block-sortabrilliant-dapper-desktop">
 	<figure>
-		<img src="<?php echo esc_url( $data['url'] ); ?>" alt="">
+		<img src="<?php echo esc_url( $data['url'] ); ?>" class="wp-image-<?php echo (int) $data['id']; ?>">
 	</figure>
 
 	<?php if ( ! empty( $data['sizes'] ) ) : ?>

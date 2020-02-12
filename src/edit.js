@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { get } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -88,14 +89,16 @@ class Edit extends Component {
 			return;
 		}
 
+		const url = get( media, [ 'sizes', 'large', 'url' ] ) || media.url;
+
 		this.setState( {
 			isEditing: false,
 		} );
 
 
 		this.props.setAttributes( {
+			url,
 			id: media.id,
-			url: media.url,
 			isResized: false,
 		} );
 	}
@@ -113,11 +116,6 @@ class Edit extends Component {
 		const { id, url, type, isResized } = attributes;
 		const hideResizeButton = inProgress || isBlobURL( url );
 
-		const labels = {
-			title: 'Wallpaper',
-			instructions: 'Upload your image or select one from the media library. For best results please use an image at least "5120x2880".',
-		};
-
 		if ( isEditing || ! url ) {
 			return (
 				<>
@@ -125,7 +123,7 @@ class Edit extends Component {
 						icon={ <BlockIcon icon="images-alt2" /> }
 						onSelect={ this.onSelectImage }
 						notices={ noticeUI }
-						labels={ labels }
+						labels={ { title: 'Wallpaper' } }
 						onError={ this.onUploadError }
 						accept="image/*"
 						allowedTypes={ ALLOWED_MEDIA_TYPES }
@@ -184,6 +182,7 @@ class Edit extends Component {
 		const inspectorControls = (
 			<InspectorControls>
 				<PanelBody title="Wallpaper Settings">
+					<p>For best results please use an image at least 5120x2880 (Desktop) or 1440x2560 (Mobile).</p>
 					<SelectControl
 						label="Wallpaper Type"
 						value={ type }
