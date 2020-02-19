@@ -14,6 +14,7 @@ module.exports = {
 
 		editor: path.resolve( process.cwd(), 'src', 'editor.scss' ),
 		style: path.resolve( process.cwd(), 'src', 'style.scss' ),
+		theme: path.resolve( process.cwd(), 'src', 'theme.js' ),
 	},
 
 	module: {
@@ -40,6 +41,7 @@ module.exports = {
 			'style.js',
 			'editor.asset.php',
 			'style.asset.php',
+			'theme.asset.php',
 		] ),
 	],
 };

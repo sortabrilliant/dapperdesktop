@@ -29,6 +29,13 @@ function register_block() {
 		$asset_file['version']
 	);
 
+	wp_register_script(
+		'dapper-desktop-theme-script',
+		plugins_url( 'build/theme.js', PLUGIN_FILE ),
+		$asset_file['dependencies'],
+		$asset_file['version']
+	);
+
 	wp_register_style(
 		'dapper-desktop-style',
 		plugins_url( 'build/style.css', PLUGIN_FILE ),
@@ -60,6 +67,9 @@ add_action( 'init', __NAMESPACE__ . '\\register_block' );
  */
 function render_block( $attributes ) {
 	$data = ImageEditor\get_image_data( $attributes );
+
+	// Enqueue conditional script.
+	wp_enqueue_script( 'dapper-desktop-theme-script' );
 	
 	extract( [ 'data' => $data ], EXTR_SKIP );
 
