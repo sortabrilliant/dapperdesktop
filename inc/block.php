@@ -32,7 +32,7 @@ function register_block() {
 	wp_register_script(
 		'dapper-desktop-theme-script',
 		plugins_url( 'build/theme.js', PLUGIN_FILE ),
-		$asset_file['dependencies'],
+		[],
 		$asset_file['version']
 	);
 
