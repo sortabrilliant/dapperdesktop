@@ -2,9 +2,9 @@
 Contributors: sortabrilliant, mamaduka
 Tags: wallpaper, block
 Requires at least: 5.0
-Tested up to: 5.3.2
+Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -26,6 +26,7 @@ This plugin is brought to you by [sorta brilliant](https://sortabrilliant.com/) 
 1. Click. Click. Done.
 
 == Changelog ==
+* 1.0.4 Make resizeButton compatible with WP 5.4.
 * 1.0.3 Removes wrong theme.js dependencies.
 * 1.0.2 Fixes button popover issue
 * 1.0.1 Improve button styles
