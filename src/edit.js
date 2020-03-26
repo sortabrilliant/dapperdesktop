@@ -158,7 +158,7 @@ class Edit extends Component {
 		const resizeButton = ! isResized && (
 			<>
 				<Button
-					isLarge
+					isPrimary
 					className="editor-media-placeholder__button"
 					onClick={ this.resizeImage }
 				>
